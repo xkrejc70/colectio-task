@@ -1,0 +1,7 @@
+# Composer
+vendor/*
+
+# Config
+config/local.neon
+
+*.lock

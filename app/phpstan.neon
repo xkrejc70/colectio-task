@@ -1,0 +1,31 @@
+includes:
+	- vendor/contributte/phpstan/phpstan.neon
+	- vendor/phpstan/phpstan-doctrine/extension.neon
+
+parameters:
+	level: 8
+	phpVersion: 80300
+
+	tmpDir: %currentWorkingDirectory%/var/tmp/phpstan
+
+	fileExtensions:
+		- php
+		- phpt
+
+	paths:
+		- app
+		- bin
+		- tests
+
+	doctrine:
+		objectManagerLoader: .build/phpstan-doctrine.php
+		ormRepositoryClass: App\Model\Database\Repository\AbstractRepository
+
+	checkGenericClassInNonGenericObjectType: false
+
+	ignoreErrors:
+
+		-
+			message: "#^Variable method call on Doctrine\\\\ORM\\\\EntityManagerInterface\\.$#"
+			count: 1
+			path: tests/cases/Database/TRepositoriesTest.php
