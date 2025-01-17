@@ -1,9 +1,8 @@
 # Composer
 vendor/*
 
-# Config
-config/local.neon
-
 *.lock
 
-var/*
+*.log
+
+var/log/*
