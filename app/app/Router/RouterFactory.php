@@ -14,6 +14,11 @@ final class RouterFactory
 	{
 		$router = new RouteList();
 
+		$router->addRoute('api/items', [
+			'presenter' => 'Api',
+			'action' => 'items',
+		]);
+
 		$router->addRoute('<presenter>[[/<locale=en_GB>][/<action>]]', [
 			'presenter' => 'Basic',
 			'action' => 'default',
