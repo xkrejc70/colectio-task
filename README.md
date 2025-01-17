@@ -20,4 +20,6 @@ docker-compose up --build
 ```
 
 ### Access the API:
-`http://localhost:8000/api/items?page=1&orderBy=price&orderDir=asc`
+`http://localhost:8000/api/items?page=1&orderBy=price`
+
+`http://localhost:8000/api/items?page=1&orderBy=name&orderDir=desc`
