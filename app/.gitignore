@@ -2,7 +2,3 @@
 vendor/*
 
 *.lock
-
-*.log
-
-var/log/*
