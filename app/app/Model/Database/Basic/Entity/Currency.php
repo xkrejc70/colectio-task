@@ -56,6 +56,9 @@ class Currency extends Entity
 
     public function setRate(float $rate): void
     {
+        if ($rate <= 0) {
+            throw new \InvalidArgumentException('Rate must be a positive number.');
+        }
         $this->rate = $rate;
     }
 

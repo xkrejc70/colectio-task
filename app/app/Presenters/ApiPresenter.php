@@ -11,7 +11,7 @@ use Nette\Application\Responses\JsonResponse;
 class ApiPresenter extends Presenter
 {
 
-	#[Inject]
+	/** @inject */
 	public EntityManagerDecorator $em;
 
 	public function actionItems(): void
@@ -31,44 +31,19 @@ class ApiPresenter extends Presenter
 		if (!in_array($orderDir, $validOrderDir, true)) {
 			$this->sendError(['Invalid orderDir parameter.'], 400);
 			return;
-		}
+		}		
+		
+		$items = $this->em->getRepositoryByClass(Item::class)->findPaginatedItems($page, $orderBy, $orderDir);
 
-		$itemsPerPage = 10;
-		$offset = ($page - 1) * $itemsPerPage;
+        if (empty($items)) {
+            $this->sendError('No items found', 400);
+            return;
+        }
 
-		$qb = $this->em->createQueryBuilder();
-		$qb->select('i', 'c')
-			->from(Item::class, 'i')
-			->join('i.currency', 'c')
-			->orderBy("i.$orderBy", $orderDir)
-			->setFirstResult($offset)
-			->setMaxResults($itemsPerPage);
-
-		$items = $qb->getQuery()->getResult();
-
-		if (empty($items)) {
-			$this->sendError('No items found', 400);
-			return;
-		}
-
-		$result = array_map(function (Item $item) {
-			return [
-				'id' => $item->getId(),
-				'name' => $item->getName(),
-				'price' => $this->convertToCZK($item),
-				'description' => $item->getDescription(),
-				'currency' => [
-					'code' => $item->getCurrency()->getCode(),
-					'name' => $item->getCurrency()->getName(),
-					'rate' => $item->getCurrency()->getRate(),
-				],
-			];
-		}, $items);
-
-		$this->sendSuccess([
-			'page' => $page,
-			'items' => $result,
-		]);
+        $this->sendSuccess([
+            'page' => $page,
+            'items' => $items,
+        ]);
 	}
 
 	private function sendSuccess($data): void
@@ -81,12 +56,6 @@ class ApiPresenter extends Presenter
     {
         $this->getHttpResponse()->setCode($statusCode);
         $this->sendResponse(new JsonResponse(JsonResponseFormatter::error($message, $statusCode)));
-    }
-
-    private function convertToCZK(Item $item): float
-    {
-        $priceInCZK = $item->getPrice() * $item->getCurrency()->getRate();
-        return round($priceInCZK, 2);
     }
 
 }

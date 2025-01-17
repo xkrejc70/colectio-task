@@ -79,6 +79,10 @@ class Item extends Entity
 
     public function setPrice(float $price): void
     {
+        if ($price <= 0) {
+            throw new \InvalidArgumentException('Price must be a positive number.');
+        }
+        
         $this->price = $price;
     }
 
