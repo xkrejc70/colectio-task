@@ -13,6 +13,7 @@ final class RouterFactory
 	public static function createRouter(): RouteList
 	{
 		$router = new RouteList();
+
 		$router->addRoute('<presenter>[[/<locale=en_GB>][/<action>]]', [
 			'presenter' => 'Basic',
 			'action' => 'default',

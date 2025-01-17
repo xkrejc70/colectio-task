@@ -28,23 +28,3 @@ INSERT INTO `currencies` (code, name, rate) VALUES
 INSERT INTO `items` (name, description, price, currencyCode) VALUES
     ('Lego', 'A rare Lego set from 2008.', 100.00, 'USD'),
     ('Bob', 'Bob Minion with Robot Arms', 50.00, 'EUR');
-
-
-CREATE TABLE IF NOT EXISTS `category` (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    title VARCHAR(255) NOT NULL
-);
-
-CREATE TABLE IF NOT EXISTS `book` (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    title VARCHAR(255) NOT NULL,
-    already_read BOOLEAN NOT NULL DEFAULT FALSE,
-    created_at VARCHAR(255) NOT NULL,
-    updated_at VARCHAR(255) DEFAULT NULL,
-    category_id INT NOT NULL,
-    CONSTRAINT FK_books_category FOREIGN KEY (category_id) REFERENCES category (id)
-);
-
-INSERT INTO `category` (title) VALUES 
-('Fiction'),
-('Non-fiction');
